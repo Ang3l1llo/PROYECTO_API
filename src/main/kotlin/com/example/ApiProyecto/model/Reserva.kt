@@ -1,7 +1,7 @@
 package com.example.ApiProyecto.model
 
 import jakarta.persistence.*
-import java.sql.Date
+import java.time.LocalDate
 
 
 @Entity
@@ -9,15 +9,20 @@ import java.sql.Date
 data class Reserva (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
-    @Column(name = "fecha_reserva")
-    val fecha_reserva: Date? = null,
+    @Column(nullable = false)
+    var fecha_reserva: LocalDate? = null,
 
-    @Column(name = "espacio")
-    val espacio: String? = null,
+    @Column(nullable = false)
+    var espacio: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.PERSIST])
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
-    val usuario: Long? = null
+    var usuario: Usuario? = null,
+
+    @OneToMany(mappedBy = "reserva", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var detalles: List<DetallesReserva> = mutableListOf()
+
+
 )

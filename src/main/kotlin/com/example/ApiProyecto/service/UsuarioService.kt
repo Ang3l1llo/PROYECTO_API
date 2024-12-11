@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
 
 @Service
 class UsuarioService {
 
     @Autowired
     private lateinit var usuarioRepository: UsuarioRepository
+
+    @Autowired
+    private lateinit var passwordEncoder: BCryptPasswordEncoder
 
 
     fun loadUserByUsername(username: String?): UserDetails {
@@ -21,7 +26,27 @@ class UsuarioService {
             .builder()
             .username(usuario.username)
             .password(usuario.password)
-            .roles(usuario.role)//!!.split(",").toString()
+            .roles(usuario.role)
             .build()
+    }
+
+    fun registerUser(user: Usuario): Usuario {
+        val existingUser = usuarioRepository.findByusername(user.username!!)
+        if (existingUser.isPresent) {
+            throw Exception("Usuario ya existente")
+        }
+
+        user.password = passwordEncoder.encode(user.password)
+
+        return usuarioRepository.save(user)
+    }
+
+    fun existsByusername(username: String?): Boolean {
+        val existingUser = usuarioRepository.findByusername(username!!)
+        return existingUser.isPresent
+    }
+
+    fun getUserById(id: Long): Usuario? {
+        return usuarioRepository.findById(id).orElse(null)
     }
 }

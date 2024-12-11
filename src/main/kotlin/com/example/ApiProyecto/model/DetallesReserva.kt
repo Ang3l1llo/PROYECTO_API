@@ -1,22 +1,22 @@
 package com.example.ApiProyecto.model
 
 import jakarta.persistence.*
-import java.sql.Time
+import java.time.LocalTime
 
 @Entity
 @Table(name = "detalles_reservas")
 data class DetallesReserva (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @Column(nullable = false)
-    val hora_inicio: Time? = null,
+    var hora_inicio: LocalTime? = null,
 
     @Column(nullable = false)
-    val hora_fin: Time? = null,
+    var hora_fin: LocalTime? = null,
 
-    @ManyToOne(cascade = [CascadeType.MERGE, CascadeType.PERSIST])
+    @ManyToOne
     @JoinColumn(name = "id_reserva")
-    val reserva: Long? = null
+    var reserva: Reserva? = null
 )
