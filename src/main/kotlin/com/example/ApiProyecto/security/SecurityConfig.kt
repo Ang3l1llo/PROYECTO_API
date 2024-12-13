@@ -37,12 +37,23 @@ class SecurityConfig {
         return http
             .csrf { csrf -> csrf.disable() } // Cross-Site Forgery
             .authorizeHttpRequests { auth -> auth
-                .requestMatchers("/usuarios/login").permitAll()
-                .requestMatchers("/rutas_protegidas/usuario_autenticado").authenticated()
-                .requestMatchers(HttpMethod.GET,"/rutas_protegidas/recurso/{id}").permitAll()
-                .requestMatchers("/rutas_protegidas/recurso1").authenticated()
-                .requestMatchers(HttpMethod.DELETE,"/rutas_protegidas/recurso/{id}").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                // Rutas de usuarios
+                .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasRole("ADMIN")
+
+                // Rutas de reservas
+                .requestMatchers(HttpMethod.POST, "/reservas").authenticated()
+                .requestMatchers(HttpMethod.GET, "/reservas").authenticated()
+                .requestMatchers(HttpMethod.GET, "/reservas/{id}").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/reservas/{id}").authenticated()
+
+                // Rutas de detalles de reservas
+                .requestMatchers(HttpMethod.GET, "/detalles_reservas/{id_reserva}").authenticated()
+                .requestMatchers(HttpMethod.POST, "/detalles_reservas/{id_reserva}").authenticated()
+
+                .anyRequest().denyAll() // Bloquear cualquier otra ruta no especificada
+
             } // Los recursos protegidos y publicos
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

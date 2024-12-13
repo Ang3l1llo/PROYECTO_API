@@ -54,7 +54,7 @@ Tabla que almacena los detalles específicos de cada reserva.
 ### Endpoints de Usuarios
 - **POST /usuarios/register**: Registra un nuevo usuario en la plataforma.
 - **POST /usuarios/login**: Inicia sesión con las credenciales del usuario.
-- **GET /usuarios/{id}**: Obtiene información del usuario por su ID.
+- **GET /usuarios/{id}**: Obtiene información del usuario por su ID(Solo el admin)
 
 ---
 
@@ -68,8 +68,24 @@ Tabla que almacena los detalles específicos de cada reserva.
 
 ### Endpoints de Detalles de Reservas
 - **GET /detalles_reservas/{reserva_id}**: Obtiene los detalles de una reserva específica.
+- **POST /detalles_reservas/{reserva_id}**: Realiza detalles específicos en una reserva.
 
 ---
+
+## Rutas y Seguridad
+
+### Configuración de seguridad
+A continuación, se muestran las rutas definidas y sus configuraciones de acceso en función de si son públicas, requieren autenticación o roles específicos:
+
+- **POST /usuarios/register**: Permitida para todos (sin autenticación).
+- **POST /usuarios/login**: Permitida para todos (sin autenticación).
+- **GET /usuarios/{id}**: Solo permitido para admins.
+- **POST /reservas**: Requiere autenticación. Solo los usuarios autenticados pueden crear reservas.
+- **GET /reservas**: Requiere autenticación. Los usuarios autenticados solo pueden ver sus propias reservas.
+- **GET /reservas/{id}**: Requiere autenticación. Un usuario puede ver su propia reserva.
+- **DELETE /reservas/{id}**: Requiere autenticación. Un usuario puede eleminar sus propias reservas.
+- **GET /detalles_reservas/{reserva_id}**: Requiere autenticación. Un usuario puede ver los detalles de sus propias reservas.
+- **POST /detalles_reservas/{reserva_id}**: Requiere autenticación. Un usuario puede elegir detalles en su reserva.
 
 ## Diagrama Entidad-Relación
 ![Diagrama Entidad-Relación](./diagrama.png)

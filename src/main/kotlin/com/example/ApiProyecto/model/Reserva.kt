@@ -23,6 +23,4 @@ data class Reserva (
 
     @OneToMany(mappedBy = "reserva", cascade = [CascadeType.ALL], orphanRemoval = true)
     var detalles: List<DetallesReserva> = mutableListOf()
-
-
 )
