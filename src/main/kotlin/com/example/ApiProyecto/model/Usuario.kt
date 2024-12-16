@@ -18,5 +18,5 @@ data class Usuario (
     var role: String? = null, //USER o ADMIN
 
     @OneToMany(mappedBy = "usuario", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var reservas: List<Reserva> = mutableListOf()
+    var reservas: MutableList<Reserva> = mutableListOf()
 )

@@ -12,7 +12,7 @@ data class Reserva (
     var id: Long? = null,
 
     @Column(nullable = false)
-    var fecha_reserva: LocalDate? = null,
+    var fechaReserva: LocalDate? = null,
 
     @Column(nullable = false)
     var espacio: String? = null,
@@ -22,5 +22,5 @@ data class Reserva (
     var usuario: Usuario? = null,
 
     @OneToMany(mappedBy = "reserva", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var detalles: List<DetallesReserva> = mutableListOf()
+    var detalles: MutableList<DetallesReserva> = mutableListOf()
 )

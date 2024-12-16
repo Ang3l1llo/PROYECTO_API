@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
@@ -40,7 +39,7 @@ class SecurityConfig {
                 // Rutas de usuarios
                 .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated()
 
                 // Rutas de reservas
                 .requestMatchers(HttpMethod.POST, "/reservas").authenticated()
@@ -62,7 +61,7 @@ class SecurityConfig {
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
+    fun passwordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
 

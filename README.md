@@ -17,6 +17,13 @@ En resumen, esta API facilitará el acceso a espacios deportivos y optimizará s
 
 ---
 
+## Lógica de Negocio
+- Un usuario solo puede ver y modificar sus propias reservas.
+- Los administradores pueden ver y gestionar todas las reservas de todos los usuarios.
+- Las reservas solo pueden realizarse en espacios disponibles. Si el espacio ya está reservado en la fecha y hora seleccionadas, la reserva no se puede crear.
+
+---
+
 ## Descripción Detallada de las Tablas
 
 ### 1. `usuarios`
@@ -51,7 +58,7 @@ Tabla que almacena los detalles específicos de cada reserva.
 
 ## Funcionalidades Clave de la API
 
-### Endpoints de Usuarios
+### Endpoints de Usuarios 
 - **POST /usuarios/register**: Registra un nuevo usuario en la plataforma.
 - **POST /usuarios/login**: Inicia sesión con las credenciales del usuario.
 - **GET /usuarios/{id}**: Obtiene información del usuario por su ID(Solo el admin)
@@ -86,6 +93,15 @@ A continuación, se muestran las rutas definidas y sus configuraciones de acceso
 - **DELETE /reservas/{id}**: Requiere autenticación. Un usuario puede eleminar sus propias reservas.
 - **GET /detalles_reservas/{reserva_id}**: Requiere autenticación. Un usuario puede ver los detalles de sus propias reservas.
 - **POST /detalles_reservas/{reserva_id}**: Requiere autenticación. Un usuario puede elegir detalles en su reserva.
+
+---
+
+## Excepciones y Códigos de Estado
+- **400 Bad Request:** Si los datos enviados no son válidos o están incompletos.
+- **401 Unauthorized:** Si el usuario no está autenticado al intentar acceder a un endpoint que requiere autenticación.
+- **403 Forbidden:** Si un usuario intenta acceder a un recurso para el cual no tiene permisos.
+- **404 Not Found:** Si no se encuentra el recurso solicitado (por ejemplo, una reserva o un usuario con un ID específico).
+- **500 Internal Server Error:** Si ocurre un error inesperado en el servidor.
 
 ## Diagrama Entidad-Relación
 ![Diagrama Entidad-Relación](./diagrama.png)

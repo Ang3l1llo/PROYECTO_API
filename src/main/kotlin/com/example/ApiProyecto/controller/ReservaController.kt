@@ -2,6 +2,7 @@ package com.example.ApiProyecto.controller
 
 import com.example.ApiProyecto.model.Reserva
 import com.example.ApiProyecto.model.Usuario
+import com.example.ApiProyecto.repository.UsuarioRepository
 import com.example.ApiProyecto.service.ReservaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,15 +17,29 @@ class ReservaController {
     @Autowired
     private lateinit var reservaService: ReservaService
 
+    @Autowired
+    private lateinit var usuarioRepository: UsuarioRepository
+
     @PostMapping
     fun createReservation(@RequestBody newReservation: Reserva): ResponseEntity<Reserva> {
-        if(reservaService.existsById(newReservation.id)){
+
+        // Verifica que el usuario esté presente
+        if (newReservation.usuario?.id != null) {
+            val usuario = usuarioRepository.findById(newReservation.usuario!!.id!!)
+            if (usuario.isPresent) {
+                newReservation.usuario = usuario.get()
+            } else {
+                return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+            }
+        } else {
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
-        val reservationDone = reservaService.registerReservation(newReservation)
 
+        val reservationDone = reservaService.registerReservation(newReservation)
         return ResponseEntity(reservationDone, HttpStatus.CREATED)
     }
+
+
 
     @GetMapping
     fun getReservations(): ResponseEntity<List<Reserva>> {

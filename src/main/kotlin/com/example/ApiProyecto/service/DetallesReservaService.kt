@@ -25,10 +25,10 @@ class DetallesReservaService {
         val reserva = reservaRepository.findById(idReserva).orElse(null)
             ?: throw Exception("Reserva no encontrada")
 
-        if (detalle.hora_inicio == null || detalle.hora_fin == null) {
+        if (detalle.horaInicio == null || detalle.horaFin == null) {
             throw Exception("Las horas de inicio y fin no pueden ser nulas")
         }
-        if (detalle.hora_inicio!!.isAfter(detalle.hora_fin)) {
+        if (detalle.horaInicio!!.isAfter(detalle.horaFin)) {
             throw Exception("La hora de inicio no puede ser posterior a la hora de fin")
         }
 

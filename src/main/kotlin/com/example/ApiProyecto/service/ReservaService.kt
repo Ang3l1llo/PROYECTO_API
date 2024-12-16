@@ -1,13 +1,10 @@
 package com.example.ApiProyecto.service
 
 import com.example.ApiProyecto.model.Reserva
-import com.example.ApiProyecto.model.Usuario
 import com.example.ApiProyecto.repository.ReservaRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class ReservaService {
@@ -16,15 +13,16 @@ class ReservaService {
     private lateinit var reservaRepository: ReservaRepository
 
     fun registerReservation(reservation: Reserva): Reserva{
-        val existingReservation = reservaRepository.findById(reservation.id!!)
-        if (existingReservation.isPresent){
-            throw Exception("Reserva ya existente")
+        if(reservaRepository.findByfechaReserva(reservation.fechaReserva!!).isNotEmpty()
+            && reservaRepository.findByEspacio(reservation.espacio!!).isNotEmpty()){
+            throw Exception("Esa fecha de ese espacio ya esta reservada")
         }
         return reservaRepository.save(reservation)
     }
 
     fun existsById(id: Long?): Boolean {
         val existingReservation = reservaRepository.findById(id!!)
+
         return existingReservation.isPresent
     }
 

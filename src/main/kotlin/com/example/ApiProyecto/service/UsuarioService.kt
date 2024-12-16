@@ -5,12 +5,13 @@ import com.example.ApiProyecto.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 
 @Service
-class UsuarioService {
+class UsuarioService: UserDetailsService {
 
     @Autowired
     private lateinit var usuarioRepository: UsuarioRepository
@@ -18,8 +19,7 @@ class UsuarioService {
     @Autowired
     private lateinit var passwordEncoder: BCryptPasswordEncoder
 
-
-    fun loadUserByUsername(username: String?): UserDetails {
+    override fun loadUserByUsername(username: String?): UserDetails {
         var usuario : Usuario = usuarioRepository.findByusername(username!!).orElseThrow {Exception("Usuario no encontrado")}
 
         return User
@@ -49,4 +49,5 @@ class UsuarioService {
     fun getUserById(id: Long): Usuario? {
         return usuarioRepository.findById(id).orElse(null)
     }
+
 }

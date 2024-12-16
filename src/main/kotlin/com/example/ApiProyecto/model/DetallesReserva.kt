@@ -11,10 +11,10 @@ data class DetallesReserva (
     var id: Long? = null,
 
     @Column(nullable = false)
-    var hora_inicio: LocalTime? = null,
+    var horaInicio: LocalTime? = null,
 
     @Column(nullable = false)
-    var hora_fin: LocalTime? = null,
+    var horaFin: LocalTime? = null,
 
     @ManyToOne
     @JoinColumn(name = "id_reserva")
